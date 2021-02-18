@@ -36,4 +36,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function env(){
+        return $this->hasMany('App\environment','env_id');
+    }
 }
