@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class EnvironmentController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +17,8 @@ class EnvironmentController extends Controller
      */
     public function index()
     {
-        //
+        $env_data = environment::all();
+        return view('environment.index',compact('env_data'));
     }
 
     /**
@@ -24,7 +28,8 @@ class EnvironmentController extends Controller
      */
     public function create()
     {
-        //
+        
+        return view('environment.create');
     }
 
     /**
@@ -35,7 +40,23 @@ class EnvironmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'env_machine_name'=>'required',
+            'env_machine_os',
+            'env_thread'=>'required',
+            'env_ram'=>'required',
+            'env_server'=>'required'
+            ]);
+        $env =  new environment();
+        $env->env_machine_name = $request->input('env_machine_name');
+        $env->env_machine_os = $request->input('env_machine_os');
+        $env->env_thread = $request->input('env_thread');
+        $env->env_ram = $request->input('env_ram');
+        $env->env_server = $request->input('env_server');
+        $env->user_id = $request->input('user_id');
+        $env->save();
+
+        return redirect()->route('env.index');
     }
 
     /**
@@ -78,8 +99,10 @@ class EnvironmentController extends Controller
      * @param  \App\environment  $environment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(environment $environment)
+    public function destroy($environment)
     {
-        //
+        $env_destroy = environment::find($environment);
+        $env_destroy->delete();
+        return redirect()->route('env.index');
     }
 }
