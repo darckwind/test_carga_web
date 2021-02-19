@@ -76,9 +76,10 @@ class EnvironmentController extends Controller
      * @param  \App\environment  $environment
      * @return \Illuminate\Http\Response
      */
-    public function edit(environment $environment)
+    public function edit($environment)
     {
-        //
+        $env_data_edit = environment::find($environment);
+        return view('environment.edit',compact('env_data_edit'));
     }
 
     /**
@@ -88,9 +89,17 @@ class EnvironmentController extends Controller
      * @param  \App\environment  $environment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, environment $environment)
+    public function update(Request $request,$environment)
     {
-        //
+        $env_data_update = environment::find($environment);
+        $env_data_update->env_machine_name = $request->input('env_machine_name');
+        $env_data_update->env_machine_os = $request->input('env_machine_os');
+        $env_data_update->env_thread = $request->input('env_thread');
+        $env_data_update->env_ram = $request->input('env_ram');
+        $env_data_update->env_server = $request->input('env_server');
+        $env_data_update->user_id = $request->input('user_id');
+        $env_data_update->save();
+        return redirect()->route('env.index');
     }
 
     /**
