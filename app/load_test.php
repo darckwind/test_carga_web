@@ -13,6 +13,6 @@ class load_test extends Model
     protected $primaryKey = 'load_test_id';
 
     public function environment(){
-        return $this->hasOne('App\environment','env_id');
+        return $this->belongsTo('App\environment','env_id');
     }
 }

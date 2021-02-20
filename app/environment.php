@@ -12,7 +12,7 @@ class environment extends Model
     protected $primaryKey = 'env_id';
 
     public function user(){
-        return $this->hasOne('App\User','id');
+        return $this->belongsTo('App\User','id');
     }
 
     public function load_test(){

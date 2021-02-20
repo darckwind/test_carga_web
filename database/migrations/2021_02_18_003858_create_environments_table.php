@@ -21,7 +21,7 @@ class CreateEnvironmentsTable extends Migration
             $table->Integer('env_ram');
             $table->string('env_server');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
