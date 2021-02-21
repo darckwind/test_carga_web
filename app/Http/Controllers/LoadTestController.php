@@ -112,8 +112,17 @@ class LoadTestController extends Controller
         fwrite($file,'csv_file = "'.$data_test->load_test_csv_token_name.'"');
         fwrite($file, "\n");
         fclose($file);
-        $com = "mvn gatling:test -Dgatling.simulationClass=computerdatabase.".substr($data_test->load_test_file_charge_name,0,-6);
-        die($com);
+        $com = "cd storage/gatling && mvn gatling:test -Dgatling.simulationClass=computerdatabase.".substr($data_test->load_test_file_charge_name,0,-6);
+        exec($com,$out);
+        foreach ($out as $line) {
+            if (str_starts_with($line, 'Please open the following file:')) {
+                //example path file = Please open the following file: /Users/sophie/development/test_carga_web/storage/app/public/gatling/target/gatling/basicsimulation-20210221224427800/index.html
+                $path_file= substr(strstr($line, '/gatling/target/'),1);
+            }
+        }
+
+
+        return view('load.show',compact('path_file'));
     }
 
     /**

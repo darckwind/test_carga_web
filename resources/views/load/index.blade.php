@@ -21,6 +21,7 @@
         </div>
     </div>
     <div class="row">
+        
         <table class="table table-responsive-sm ">
             <tr>
                 <th>Machine</th>
