@@ -44,33 +44,22 @@ class LoadTestController extends Controller
      */
     public function store(Request $request)
     {   
-        if($request->hasFile('load_test_file_charge')){
-            $request->validate([
-                'load_test_name'=>'required',
-                'load_test_base_url'=>'required',
-                'load_test_post_url'=>'required',
-                'load_test_num_usr'=>'required',
-                'load_test_csv_token'=>'required|mimes:csv,txt',
-                'load_test_file_charge'=>'required|mimes:scala,txt',
-                'env_id'=>'required'
-            ]);
-        }else{
-            $request->validate([
-                'load_test_name'=>'required',
-                'load_test_base_url'=>'required',
-                'load_test_post_url'=>'required',
-                'load_test_num_usr'=>'required',
-                'load_test_csv_token'=>'required|mimes:csv,txt',
-                'env_id'=>'required'
-            ]);
-        }
-
+        
+        $request->validate([
+            'load_test_name'=>'required',
+            'load_test_base_url'=>'required',
+            'load_test_post_url'=>'required',
+            'load_test_num_usr'=>'required',
+            'load_test_csv_token'=>'required|mimes:csv,txt',
+            'load_test_file_charge'=>'nullable|mimes:scala,txt',
+            'env_id'=>'required'
+        ]);
         $load_test = new load_test();
         $load_test->load_test_name = $request->input('load_test_name');
         $load_test->load_test_base_url = $request->input('load_test_base_url');
         $load_test->load_test_post_url = $request->input('load_test_post_url');
         $load_test->load_test_num_usr = $request->input('load_test_num_usr');
-        $load_test->load_test_ramp_usr = $request->input('load_test_ramp_usr',0);
+        $load_test->load_test_ramp_usr = $request->input('load_test_ramp_usr',0)?: 0;
         if($request->input('load_test_rand_anws')=="on"){
             $load_test->load_test_rand_anws = true;
         }else{
