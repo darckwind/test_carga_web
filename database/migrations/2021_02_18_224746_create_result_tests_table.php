@@ -17,7 +17,7 @@ class CreateResultTestsTable extends Migration
             $table->bigIncrements('result_test_id');
             $table->string('result_test_path');
             $table->unsignedBigInteger('load_test_id');
-            $table->foreign('load_test_id')->references('load_test_id')->on('load_tests');
+            $table->foreign('load_test_id')->references('load_test_id')->on('load_tests')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

@@ -47,7 +47,7 @@ class ResultTestController extends Controller
      */
     public function show($load_test_id)
     {
-        $all_result = result_test::all()->where('load_test_id',$load_test_id);
+        $all_result = result_test::all()->where('load_test_id',$load_test_id)->sortByDesc('created_at');
         $data_load_test = load_test::find($load_test_id);
         //die($all_result);
         return view('test_result.show',compact('all_result','data_load_test'));
