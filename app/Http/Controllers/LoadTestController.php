@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\load_test;
 use App\environment;
+use App\result_test;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -110,6 +111,10 @@ class LoadTestController extends Controller
             }
         }
 
+        $result_test_path = new result_test();
+        $result_test_path->result_test_path = $path_file;
+        $result_test_path->load_test_id = $load_test;
+        $result_test_path->save();
 
         return view('load.show',compact('path_file'));
     }
@@ -120,9 +125,10 @@ class LoadTestController extends Controller
      * @param  \App\load_test  $load_test
      * @return \Illuminate\Http\Response
      */
-    public function edit(load_test $load_test)
+    public function edit($load_test)
     {
-        //
+        $edit_data = load_test::find($load_test);
+        return view('load.edit',compact('edit_data'));
     }
 
     /**
@@ -132,9 +138,39 @@ class LoadTestController extends Controller
      * @param  \App\load_test  $load_test
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, load_test $load_test)
+    public function update(Request $request, $load_test_id)
     {
-        //
+        $request->validate([
+            'load_test_name'=>'required',
+            'load_test_base_url'=>'required',
+            'load_test_post_url'=>'required',
+            'load_test_num_usr'=>'required',
+            'load_test_csv_token'=>'nullable|mimes:csv,txt',
+            'load_test_file_charge'=>'nullable|mimes:scala,txt',
+            'env_id'=>'required'
+        ]);
+        $load_test = load_test::find($load_test_id);
+        $load_test->load_test_name = $request->input('load_test_name');
+        $load_test->load_test_base_url = $request->input('load_test_base_url');
+        $load_test->load_test_post_url = $request->input('load_test_post_url');
+        $load_test->load_test_num_usr = $request->input('load_test_num_usr');
+        $load_test->load_test_ramp_usr = $request->input('load_test_ramp_usr',0)?: 0;
+        if($request->input('load_test_rand_anws')=="on"){
+            $load_test->load_test_rand_anws = true;
+        }else{
+            $load_test->load_test_rand_anws = false;
+        }
+        if($request->hasFile('load_test_csv_token')){
+            $load_test->load_test_csv_token_name = $request->load_test_csv_token->getClientOriginalName();
+            $load_test->load_test_csv_token = $request->load_test_csv_token->storeAs('gatling/src/test/resources',$request->load_test_csv_token->getClientOriginalName(),'public');
+        }
+        if($request->hasFile('load_test_file_charge')){
+            $load_test->load_test_file_charge_name = $request->load_test_file_charge->getClientOriginalName();
+            $load_test->load_test_file_charge = $request->load_test_file_charge->storeAs('gatling/src/test/scala/computerdatabase',$request->load_test_file_charge->getClientOriginalName(),'public');
+        }
+        $load_test->env_id = $request->input('env_id');
+        $load_test->save();
+        return redirect()->route('load.index');
     }
 
     /**

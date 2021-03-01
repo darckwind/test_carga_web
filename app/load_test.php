@@ -15,4 +15,8 @@ class load_test extends Model
     public function environment(){
         return $this->belongsTo('App\environment','env_id');
     }
+
+    public function result_test(){
+        return $this->hasMany('App\result_test','result_test_id');
+    }
 }

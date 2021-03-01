@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\result_test;
+use App\load_test;
 use Illuminate\Http\Request;
 
 class ResultTestController extends Controller
@@ -44,9 +45,12 @@ class ResultTestController extends Controller
      * @param  \App\result_test  $result_test
      * @return \Illuminate\Http\Response
      */
-    public function show(result_test $result_test)
+    public function show($load_test_id)
     {
-        //
+        $all_result = result_test::all()->where('load_test_id',$load_test_id);
+        $data_load_test = load_test::find($load_test_id);
+        //die($all_result);
+        return view('test_result.show',compact('all_result','data_load_test'));
     }
 
     /**
