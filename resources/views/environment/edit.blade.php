@@ -4,7 +4,7 @@
 <div class="container" onload="load_select();" >
     <div class="row">
         <div class=" col-md-12">
-            <h2>Add New Environment</h2>
+            <h2>Edit Environment</h2>
         </div>
         <div class="col-md-12 ">
             <form action="{{ route('env.update', $env_data_edit->env_id) }}" method="POST">
