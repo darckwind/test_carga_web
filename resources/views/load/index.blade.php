@@ -50,8 +50,10 @@
                             @endif
                             <td>
                                 <form action="{{ route('load.destroy', $data->load_test_id) }}" method="POST">
+				@if($data->load_test_file_charge_name != null)
                                     <a class="btn btn-warning" href="{{ route('load.show', $data->load_test_id) }}"><i
                                             class="fa fa-bolt"></i></a>
+				@endif
                                     <a class="btn btn-success" href="{{ route('load.edit', $data->load_test_id) }}"><i
                                             class="fa fa-edit"></i></a>
                                     <a class="btn btn-info" href="{{ route('result.show', $data->load_test_id) }}"><i
