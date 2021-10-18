@@ -66,7 +66,7 @@ class Example_File extends Simulation {
   if(config.getString("ramp_usr").toInt== 0){
     setUp(scn.inject(atOnceUsers(config.getString("n_user").toInt)).protocols(httpProtocol))
   }else{
-    setUp(scn.inject(atOnceUsers(config.getString("n_user").toInt, rampUsers(config.getString("ramp_usr").toInt).during(10.seconds))).protocols(httpProtocol))
+    setUp(scn.inject(atOnceUsers(config.getString("n_user").toInt), rampUsers(config.getString("ramp_usr").toInt).during(10.seconds)).protocols(httpProtocol))
   }
   
 }
